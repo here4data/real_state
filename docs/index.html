@@ -101,11 +101,14 @@
 
 <footer>
   <p>
-    Fuentes: FincaRaíz, Metrocuadrado, Ciencuadras, GoPlaceIt, Houm, La Haus, Properati, Inmuebles24,
-    Habi, Mercado Libre, EstrenarVivienda, Mitula y Trovit (adaptadores propios; los portales muertos
-    o cuyo robots.txt prohíbe el rastreo se registran pero no se rastrean). Zona: Calle 80-134,
-    Carrera 2-60. "✓ Buen precio" = precio/m² al menos 5% bajo la mediana de su segmento. Dataset
-    generado con <code>scripts/build_dataset.py</code>. Ver
+    Fuentes activas: FincaRaíz (Next.js server-render), Metrocuadrado (render Playwright + flight
+    data, modo bulk) y Houm (API JSON pública; su robots.txt permite agentes de IA). Ciencuadras se
+    rastrea pero ningún resultado pasa los filtros del brief. Registrados sin rastrear: Habi
+    (redirect loop), Properati, Mercado Libre y EstrenarVivienda (bloqueo 401/403), Inmuebles24,
+    GoPlaceIt y La Haus (cerrados o sin inventario, verificado 2026-07), Mitula y Trovit
+    (agregadores excluidos por robots.txt). Zona: Calle 80-134, Carrera 2-60. "✓ Buen precio" =
+    precio/m² al menos 5% bajo la mediana de su segmento. Dataset generado con
+    <code>scripts/build_dataset.py</code>. Ver
     <a href="https://github.com/here4data/real_state" target="_blank" rel="noopener">código fuente</a>.
   </p>
 </footer>

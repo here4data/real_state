@@ -17,6 +17,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from scraper.adapters.portals import crawlable_adapters, registry_summary  # noqa: E402
+from scraper.browser import BrowserFetcher  # noqa: E402
 from scraper.engine import Engine, Fetcher  # noqa: E402
 from scraper.storage.db import Storage  # noqa: E402
 
@@ -141,10 +142,16 @@ def add_opportunity_scores(listings: list[dict]) -> None:
 
 def main() -> None:
     storage = Storage(DB_PATH)
-    for adapter in crawlable_adapters():
-        engine = Engine(adapter, storage, fetcher=Fetcher(rate_limit_seconds=1.0))
-        stats = engine.run(LOCALITIES)
-        print(f"[{adapter.portal_name}] scrape stats: {stats}")
+    with BrowserFetcher() as browser_fetcher:
+        for adapter in crawlable_adapters():
+            engine = Engine(
+                adapter,
+                storage,
+                fetcher=Fetcher(rate_limit_seconds=1.0),
+                browser_fetcher=browser_fetcher,
+            )
+            stats = engine.run(LOCALITIES)
+            print(f"[{adapter.portal_name}] scrape stats: {stats}")
 
     rows = storage._conn.execute("SELECT * FROM listings").fetchall()
     filtered = [row_to_dict(r) for r in rows if passes_brief_filters(r)]

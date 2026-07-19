@@ -17,18 +17,8 @@ import re
 
 from scraper.adapters.fincaraiz import FincaRaizAdapter
 from scraper.adapters.generic import GenericPortalAdapter
-
-
-class MetrocuadradoAdapter(GenericPortalAdapter):
-    portal_name = "metrocuadrado"
-    base_url = "https://www.metrocuadrado.com"
-    status = "needs_js"
-    status_note = "Incapsula bot-management + Next.js SPA. Requiere Playwright Cloud."
-    property_paths = {"apartamento": "apartamento", "casa": "casa", "duplex": "apartamento"}
-    listing_href_re = re.compile(r'href="((?:https://www\.metrocuadrado\.com)?/inmueble/[^"]+)"')
-
-    def search_path(self, operation, property_path, locality):
-        return f"/{property_path}/{operation}/bogota/{locality}/"
+from scraper.adapters.houm import HoumAdapter
+from scraper.adapters.metrocuadrado import MetrocuadradoAdapter
 
 
 class CiencuadrasAdapter(GenericPortalAdapter):
@@ -67,8 +57,8 @@ class Inmuebles24Adapter(GenericPortalAdapter):
 class HabiAdapter(GenericPortalAdapter):
     portal_name = "habi"
     base_url = "https://habi.co"
-    status = "active"
-    status_note = "iBuyer stock (venta only)."
+    status = "blocked"
+    status_note = "Redirect loop (>30 redirects) en la ruta de búsqueda; verificado 2026-07."
     property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
     listing_href_re = re.compile(r'href="((?:https://habi\.co)?/(?:comprar|inmueble)[^"]+)"')
 
@@ -83,34 +73,20 @@ class HabiAdapter(GenericPortalAdapter):
 class GoPlaceItAdapter(GenericPortalAdapter):
     portal_name = "goplaceit"
     base_url = "https://www.goplaceit.com"
-    status = "needs_js"
-    status_note = "React SPA. Requiere Playwright Cloud."
-    property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
-    listing_href_re = re.compile(r'href="((?:https://www\.goplaceit\.com)?/inmueble/[^"]+)"')
+    status = "dead"
+    status_note = "Portal cerrado: homepage redirige a /404 y solo queda una página de despedida (verificado 2026-07)."
 
     def search_path(self, operation, property_path, locality):
         return f"/{operation}-{property_path}/bogota/{locality}"
 
 
-class HoumAdapter(GenericPortalAdapter):
-    portal_name = "houm"
-    base_url = "https://www.houm.com"
-    status = "needs_js"
-    status_note = "Next.js SPA, rental-skewed. Requiere Playwright Cloud."
-    property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
-    listing_href_re = re.compile(r'href="((?:https://www\.houm\.com)?/(?:arriendo|venta)/[^"]+)"')
-
-    def search_path(self, operation, property_path, locality):
-        return f"/{operation}/{property_path}/bogota/{locality}"
-
-
 class LaHausAdapter(GenericPortalAdapter):
     portal_name = "lahaus"
     base_url = "https://www.lahaus.com"
-    status = "needs_js"
-    status_note = "Hybrid render SPA; new-dev niche. Requiere Playwright Cloud."
-    property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
-    listing_href_re = re.compile(r'href="((?:https://www\.lahaus\.com)?/inmueble/[^"]+)"')
+    status = "dead"
+    status_note = ("Sin inventario rastreable: sitemap solo trae guías/contenido, la búsqueda "
+                   "renderiza vacía y no llama ninguna API de listados (verificado 2026-07; "
+                   "pivote del negocio a proyectos nuevos).")
 
     def search_path(self, operation, property_path, locality):
         return f"/{operation}/{property_path}/bogota/{locality}"
