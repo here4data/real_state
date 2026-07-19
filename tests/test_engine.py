@@ -37,9 +37,9 @@ def test_engine_run_persists_valid_listings_and_skips_bad_ones():
     stats = engine.run(["usaquen"])
 
     assert stats.localities_scanned == 1
-    # 4 search pages (venta/arriendo x apartamentos/casas), each yielding
+    # 6 search pages (venta/arriendo x apartamentos/casas/duplex), each yielding
     # the same 2 listing URLs from the fixture.
-    assert stats.listings_found == 8
+    assert stats.listings_found == 12
     assert stats.listings_persisted >= 1
     assert stats.listings_skipped >= 1
     assert storage.count_listings() == 1

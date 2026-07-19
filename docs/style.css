@@ -144,3 +144,27 @@ footer a { color: var(--accent); }
 @media (max-width: 480px) {
   .filters { grid-template-columns: repeat(2, 1fr); }
 }
+
+/* --- Mapa y oportunidades --- */
+.section-title {
+  margin: 1.5rem 0 0.75rem;
+  font-size: 1.1rem;
+}
+#map {
+  height: 440px;
+  border-radius: 12px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  z-index: 0;
+}
+.map-note {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-top: 0.4rem;
+}
+.card-score {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0.2rem 0;
+}
+.card-score.good-deal { color: #1a7f37; }
+.card-score.above-median { color: #b35900; }

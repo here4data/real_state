@@ -17,8 +17,10 @@ def test_search_urls_covers_operations_and_property_types(adapter):
     assert set(urls) == {
         "https://www.fincaraiz.com.co/venta/apartamentos/usaquen/bogota",
         "https://www.fincaraiz.com.co/venta/casas/usaquen/bogota",
+        "https://www.fincaraiz.com.co/venta/duplex/usaquen/bogota",
         "https://www.fincaraiz.com.co/arriendo/apartamentos/usaquen/bogota",
         "https://www.fincaraiz.com.co/arriendo/casas/usaquen/bogota",
+        "https://www.fincaraiz.com.co/arriendo/duplex/usaquen/bogota",
     }
 
 

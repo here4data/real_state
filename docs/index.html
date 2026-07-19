@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bogotá Real Estate Intelligence — Usaquén · Chapinero · Suba</title>
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body>
 <header class="topbar">
@@ -59,8 +60,16 @@
     </div>
 
     <div class="filter-group">
+      <label for="portal">Portal</label>
+      <select id="portal">
+        <option value="">Todos</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
       <label for="sortBy">Ordenar por</label>
       <select id="sortBy">
+        <option value="opportunity">Mejor oportunidad</option>
         <option value="price_asc">Precio: menor a mayor</option>
         <option value="price_desc">Precio: mayor a menor</option>
         <option value="area_desc">Área: mayor a menor</option>
@@ -73,6 +82,18 @@
     <span id="generatedAt"></span>
   </section>
 
+  <section aria-label="Mapa">
+    <h2 class="section-title">Mapa de inmuebles</h2>
+    <div id="map"></div>
+    <p class="map-note">Cada marcador es un inmueble georreferenciado; clic para ver detalle. Los inmuebles sin coordenadas no aparecen en el mapa.</p>
+  </section>
+
+  <section aria-label="Top oportunidades">
+    <h2 class="section-title">🏆 Top oportunidades (ranking por precio/m² vs. mediana del segmento)</h2>
+    <section id="topOffers" class="results-grid"></section>
+  </section>
+
+  <h2 class="section-title">Todos los resultados</h2>
   <section id="results" class="results-grid" aria-live="polite"></section>
   <p id="emptyState" class="empty-state" hidden>No hay resultados con estos filtros.</p>
   <p id="errorState" class="empty-state" hidden>No se pudo cargar el dataset (docs/data/listings.json).</p>
@@ -80,7 +101,9 @@
 
 <footer>
   <p>
-    Fuente: FincaRaíz (adaptador propio, cumpliendo robots.txt). Dataset generado con
+    Fuentes: FincaRaíz, Metrocuadrado, Ciencuadras, Properati, Inmuebles24, Habi, Mercado Libre,
+    EstrenarVivienda, Mitula y Trovit (adaptadores propios; los portales muertos o cuyo robots.txt
+    prohíbe el rastreo se registran pero no se rastrean). Dataset generado con
     <code>scripts/build_dataset.py</code>. Ver
     <a href="https://github.com/here4data/real_state" target="_blank" rel="noopener">código fuente</a>.
   </p>
@@ -96,17 +119,20 @@
       <h2 class="card-title"></h2>
       <p class="card-address"></p>
       <p class="card-price"></p>
+      <p class="card-score"></p>
       <ul class="card-attrs">
         <li class="attr-rooms"></li>
         <li class="attr-bathrooms"></li>
         <li class="attr-parking"></li>
         <li class="attr-area"></li>
+        <li class="attr-ppm2"></li>
       </ul>
-      <a class="card-link" target="_blank" rel="noopener">Ver en FincaRaíz →</a>
+      <a class="card-link" target="_blank" rel="noopener"></a>
     </div>
   </article>
 </template>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

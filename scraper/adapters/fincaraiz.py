@@ -20,7 +20,9 @@ BASE_URL = "https://www.fincaraiz.com.co"
 
 _LOCALITIES = ("usaquen", "chapinero", "suba")
 _OPERATIONS = ("venta", "arriendo")
-_PROPERTY_PATHS = {"apartamento": "apartamentos", "casa": "casas"}
+# duplex included per project brief; a 404 on portals without that path is
+# tolerated by the engine (logged as an error, run continues).
+_PROPERTY_PATHS = {"apartamento": "apartamentos", "casa": "casas", "duplex": "duplex"}
 
 _LISTING_PATH_RE = re.compile(r"/(\d+)/?$")
 _NEXT_DATA_RE = re.compile(
@@ -37,6 +39,8 @@ _PROPERTY_NAME_TO_CODE = {
 
 class FincaRaizAdapter:
     portal_name = "fincaraiz"
+    status = "active"
+    status_note = "Server-rendered __NEXT_DATA__; richest fields incl. lat/long."
 
     def search_urls(self, locality: str) -> list[str]:
         if locality not in _LOCALITIES:

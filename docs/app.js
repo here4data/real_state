@@ -6,8 +6,10 @@
     maxPrice: document.getElementById("maxPrice"),
     minRooms: document.getElementById("minRooms"),
     minParking: document.getElementById("minParking"),
+    portal: document.getElementById("portal"),
     sortBy: document.getElementById("sortBy"),
     results: document.getElementById("results"),
+    topOffers: document.getElementById("topOffers"),
     resultCount: document.getElementById("resultCount"),
     generatedAt: document.getElementById("generatedAt"),
     emptyState: document.getElementById("emptyState"),
@@ -22,6 +24,41 @@
   });
 
   let listings = [];
+  let map = null;
+  let markerLayer = null;
+
+  function initMap() {
+    if (typeof L === "undefined") return; // Leaflet CDN unavailable: degrade to list
+    map = L.map("map").setView([4.70, -74.06], 12); // Usaquén–Chapinero–Suba
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
+    markerLayer = L.layerGroup().addTo(map);
+  }
+
+  function renderMap(filtered) {
+    if (!map) return;
+    markerLayer.clearLayers();
+    const bounds = [];
+    for (const l of filtered) {
+      if (l.latitude == null || l.longitude == null) continue;
+      const marker = L.marker([l.latitude, l.longitude]).bindPopup(
+        `<strong>${escapeHtml(l.title || "")}</strong><br>` +
+          `${formatPrice(l)}<br>` +
+          `${l.rooms ?? "?"} hab · ${l.area_m2 ?? "?"} m² · ${escapeHtml(l.portal)}<br>` +
+          (l.opportunity_rank ? `Ranking oportunidad: #${l.opportunity_rank}<br>` : "") +
+          `<a href="${l.url}" target="_blank" rel="noopener">Ver anuncio →</a>`
+      );
+      markerLayer.addLayer(marker);
+      bounds.push([l.latitude, l.longitude]);
+    }
+    if (bounds.length) map.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
 
   function render() {
     const locality = els.locality.value;
@@ -30,8 +67,10 @@
     const maxPrice = parseFloat(els.maxPrice.value);
     const minRooms = parseInt(els.minRooms.value, 10) || 0;
     const minParking = parseInt(els.minParking.value, 10) || 0;
+    const portal = els.portal.value;
 
     let filtered = listings.filter((l) => {
+      if (portal && l.portal !== portal) return false;
       if (locality && l.locality !== locality) return false;
       if (operation && l.operation !== operation) return false;
       if (propertyType && l.property_type !== propertyType) return false;
@@ -43,6 +82,8 @@
 
     const sortBy = els.sortBy.value;
     filtered.sort((a, b) => {
+      if (sortBy === "opportunity")
+        return (a.opportunity_rank ?? Infinity) - (b.opportunity_rank ?? Infinity);
       if (sortBy === "price_desc") return b.price_cop - a.price_cop;
       if (sortBy === "area_desc") return (b.area_m2 ?? 0) - (a.area_m2 ?? 0);
       return a.price_cop - b.price_cop;
@@ -52,6 +93,18 @@
     for (const listing of filtered) {
       els.results.appendChild(buildCard(listing));
     }
+
+    // Ofertas: top 6 del filtro actual, ordenadas por ranking de oportunidad
+    els.topOffers.innerHTML = "";
+    const top = filtered
+      .filter((l) => l.opportunity_rank != null)
+      .sort((a, b) => a.opportunity_rank - b.opportunity_rank)
+      .slice(0, 6);
+    for (const listing of top) {
+      els.topOffers.appendChild(buildCard(listing));
+    }
+
+    renderMap(filtered);
 
     els.resultCount.textContent = `${filtered.length} inmueble${filtered.length === 1 ? "" : "s"}`;
     els.emptyState.hidden = filtered.length !== 0;
@@ -73,6 +126,16 @@
       listing.address || capitalize(listing.locality);
     node.querySelector(".card-price").textContent = formatPrice(listing);
 
+    const score = node.querySelector(".card-score");
+    if (listing.opportunity_rank != null) {
+      score.textContent =
+        `#${listing.opportunity_rank} oportunidad · ` +
+        `${listing.opportunity_score > 0 ? "-" : "+"}${Math.abs(listing.opportunity_score)}% vs. mediana del segmento`;
+      score.classList.add(listing.opportunity_score > 0 ? "good-deal" : "above-median");
+    } else {
+      score.textContent = "";
+    }
+
     node.querySelector(".attr-rooms").textContent = listing.rooms
       ? `${listing.rooms} hab.`
       : "";
@@ -85,9 +148,13 @@
     node.querySelector(".attr-area").textContent = listing.area_m2
       ? `${listing.area_m2} m²`
       : "";
+    node.querySelector(".attr-ppm2").textContent = listing.price_per_m2
+      ? `${COP_FORMATTER.format(listing.price_per_m2)}/m²`
+      : "";
 
     const link = node.querySelector(".card-link");
     link.href = listing.url;
+    link.textContent = `Ver en ${capitalize(listing.portal)} →`;
 
     return node;
   }
@@ -107,6 +174,13 @@
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const payload = await res.json();
       listings = payload.listings || [];
+      const portals = [...new Set(listings.map((l) => l.portal))].sort();
+      for (const p of portals) {
+        const opt = document.createElement("option");
+        opt.value = p;
+        opt.textContent = capitalize(p);
+        els.portal.appendChild(opt);
+      }
       if (payload.generated_at) {
         els.generatedAt.textContent = `Actualizado: ${payload.generated_at}`;
       }
@@ -125,10 +199,12 @@
     els.maxPrice,
     els.minRooms,
     els.minParking,
+    els.portal,
     els.sortBy,
   ]) {
     el.addEventListener("input", render);
   }
 
+  initMap();
   init();
 })();

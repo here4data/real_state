@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from scraper.adapters.fincaraiz import FincaRaizAdapter  # noqa: E402
+from scraper.adapters.portals import crawlable_adapters, registry_summary  # noqa: E402
 from scraper.engine import Engine, Fetcher  # noqa: E402
 from scraper.storage.db import Storage  # noqa: E402
 
@@ -65,16 +65,56 @@ def row_to_dict(row) -> dict:
     }
 
 
+def add_opportunity_scores(listings: list[dict]) -> None:
+    """Opportunity Score = % discount of a listing's price/m2 vs the median
+    price/m2 of its comparable segment (operation + property_type + locality).
+    Positive score => cheaper than its segment. rank = 1 is best deal."""
+    segments: dict[tuple, list[float]] = {}
+    for l in listings:
+        if l["area_m2"]:
+            l["price_per_m2"] = round(l["price_cop"] / l["area_m2"])
+            key = (l["operation"], l["property_type"], l["locality"])
+            segments.setdefault(key, []).append(l["price_per_m2"])
+        else:
+            l["price_per_m2"] = None
+
+    medians = {}
+    for key, values in segments.items():
+        values.sort()
+        n = len(values)
+        medians[key] = (values[n // 2] if n % 2 else (values[n // 2 - 1] + values[n // 2]) / 2)
+
+    for l in listings:
+        key = (l["operation"], l["property_type"], l["locality"])
+        median = medians.get(key)
+        if l["price_per_m2"] and median:
+            l["segment_median_price_per_m2"] = round(median)
+            l["opportunity_score"] = round(100 * (1 - l["price_per_m2"] / median), 1)
+        else:
+            l["segment_median_price_per_m2"] = None
+            l["opportunity_score"] = None
+
+    ranked = sorted(
+        (l for l in listings if l["opportunity_score"] is not None),
+        key=lambda l: l["opportunity_score"],
+        reverse=True,
+    )
+    for i, l in enumerate(ranked, start=1):
+        l["opportunity_rank"] = i
+    for l in listings:
+        l.setdefault("opportunity_rank", None)
+
+
 def main() -> None:
     storage = Storage(DB_PATH)
-    adapter = FincaRaizAdapter()
-    engine = Engine(adapter, storage, fetcher=Fetcher(rate_limit_seconds=1.0))
-
-    stats = engine.run(LOCALITIES)
-    print(f"scrape stats: {stats}")
+    for adapter in crawlable_adapters():
+        engine = Engine(adapter, storage, fetcher=Fetcher(rate_limit_seconds=1.0))
+        stats = engine.run(LOCALITIES)
+        print(f"[{adapter.portal_name}] scrape stats: {stats}")
 
     rows = storage._conn.execute("SELECT * FROM listings").fetchall()
     filtered = [row_to_dict(r) for r in rows if passes_brief_filters(r)]
+    add_opportunity_scores(filtered)
     filtered.sort(key=lambda r: r["price_cop"])
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -85,6 +125,7 @@ def main() -> None:
                 "generated_from_total_scraped": len(rows),
                 "count": len(filtered),
                 "localities": LOCALITIES,
+                "portals": registry_summary(),
                 "filters": {
                     "min_rooms": MIN_ROOMS,
                     "min_parking": MIN_PARKING,
