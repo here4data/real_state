@@ -23,7 +23,7 @@ class MetrocuadradoAdapter(GenericPortalAdapter):
     portal_name = "metrocuadrado"
     base_url = "https://www.metrocuadrado.com"
     status = "needs_js"
-    status_note = "Incapsula bot-management; requests gets a JS shell on some pages."
+    status_note = "Incapsula bot-management + Next.js SPA. Requiere Playwright Cloud."
     property_paths = {"apartamento": "apartamento", "casa": "casa", "duplex": "apartamento"}
     listing_href_re = re.compile(r'href="((?:https://www\.metrocuadrado\.com)?/inmueble/[^"]+)"')
 
@@ -84,7 +84,7 @@ class GoPlaceItAdapter(GenericPortalAdapter):
     portal_name = "goplaceit"
     base_url = "https://www.goplaceit.com"
     status = "needs_js"
-    status_note = "React SPA; requests may get a shell. Confirmed non-aggregator, stable IDs."
+    status_note = "React SPA. Requiere Playwright Cloud."
     property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
     listing_href_re = re.compile(r'href="((?:https://www\.goplaceit\.com)?/inmueble/[^"]+)"')
 
@@ -96,7 +96,7 @@ class HoumAdapter(GenericPortalAdapter):
     portal_name = "houm"
     base_url = "https://www.houm.com"
     status = "needs_js"
-    status_note = "Next.js JS shell; rental-skewed; explicitly allowlists AI bots in robots.txt."
+    status_note = "Next.js SPA, rental-skewed. Requiere Playwright Cloud."
     property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
     listing_href_re = re.compile(r'href="((?:https://www\.houm\.com)?/(?:arriendo|venta)/[^"]+)"')
 
@@ -108,7 +108,7 @@ class LaHausAdapter(GenericPortalAdapter):
     portal_name = "lahaus"
     base_url = "https://www.lahaus.com"
     status = "needs_js"
-    status_note = "Hybrid render, hydration gaps; new-dev niche, weakest URL stability of the 7."
+    status_note = "Hybrid render SPA; new-dev niche. Requiere Playwright Cloud."
     property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
     listing_href_re = re.compile(r'href="((?:https://www\.lahaus\.com)?/inmueble/[^"]+)"')
 

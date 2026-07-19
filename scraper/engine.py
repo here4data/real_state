@@ -40,6 +40,7 @@ class Fetcher:
         self._last_request_at: float | None = None
 
     def get(self, url: str) -> str:
+        """Fetch URL via requests."""
         if self._last_request_at is not None:
             elapsed = time.monotonic() - self._last_request_at
             wait = self._rate_limit_seconds - elapsed
