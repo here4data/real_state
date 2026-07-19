@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bogotá Real Estate Intelligence — Usaquén · Chapinero · Suba</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <h1>AI Real Estate Intelligence — Bogotá</h1>
+  <p class="subtitle">Usaquén · Chapinero · Suba — mín. 3 habitaciones, mín. 1 parqueadero</p>
+</header>
+
+<main>
+  <section class="filters" aria-label="Filtros">
+    <div class="filter-group">
+      <label for="locality">Localidad</label>
+      <select id="locality">
+        <option value="">Todas</option>
+        <option value="usaquen">Usaquén</option>
+        <option value="chapinero">Chapinero</option>
+        <option value="suba">Suba</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="operation">Operación</label>
+      <select id="operation">
+        <option value="">Todas</option>
+        <option value="venta">Venta</option>
+        <option value="arriendo">Arriendo</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="propertyType">Tipo</label>
+      <select id="propertyType">
+        <option value="">Todos</option>
+        <option value="apartamento">Apartamento</option>
+        <option value="casa">Casa</option>
+        <option value="duplex">Dúplex</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label for="maxPrice">Precio máximo (COP)</label>
+      <input id="maxPrice" type="number" placeholder="Sin límite" min="0" step="1000000">
+    </div>
+
+    <div class="filter-group">
+      <label for="minRooms">Mín. habitaciones</label>
+      <input id="minRooms" type="number" min="0" value="3">
+    </div>
+
+    <div class="filter-group">
+      <label for="minParking">Mín. parqueaderos</label>
+      <input id="minParking" type="number" min="0" value="1">
+    </div>
+
+    <div class="filter-group">
+      <label for="sortBy">Ordenar por</label>
+      <select id="sortBy">
+        <option value="price_asc">Precio: menor a mayor</option>
+        <option value="price_desc">Precio: mayor a menor</option>
+        <option value="area_desc">Área: mayor a menor</option>
+      </select>
+    </div>
+  </section>
+
+  <section class="meta-bar">
+    <span id="resultCount">Cargando…</span>
+    <span id="generatedAt"></span>
+  </section>
+
+  <section id="results" class="results-grid" aria-live="polite"></section>
+  <p id="emptyState" class="empty-state" hidden>No hay resultados con estos filtros.</p>
+  <p id="errorState" class="empty-state" hidden>No se pudo cargar el dataset (docs/data/listings.json).</p>
+</main>
+
+<footer>
+  <p>
+    Fuente: FincaRaíz (adaptador propio, cumpliendo robots.txt). Dataset generado con
+    <code>scripts/build_dataset.py</code>. Ver
+    <a href="https://github.com/here4data/real_state" target="_blank" rel="noopener">código fuente</a>.
+  </p>
+</footer>
+
+<template id="cardTemplate">
+  <article class="card">
+    <div class="card-image">
+      <img loading="lazy" alt="">
+      <span class="badge operation"></span>
+    </div>
+    <div class="card-body">
+      <h2 class="card-title"></h2>
+      <p class="card-address"></p>
+      <p class="card-price"></p>
+      <ul class="card-attrs">
+        <li class="attr-rooms"></li>
+        <li class="attr-bathrooms"></li>
+        <li class="attr-parking"></li>
+        <li class="attr-area"></li>
+      </ul>
+      <a class="card-link" target="_blank" rel="noopener">Ver en FincaRaíz →</a>
+    </div>
+  </article>
+</template>
+
+<script src="app.js"></script>
+</body>
+</html>

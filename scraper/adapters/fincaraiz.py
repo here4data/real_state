@@ -1,148 +1,140 @@
-"""FincaRaiz adapter — server-rendered HTML, requests + BeautifulSoup.
+"""FincaRaiz adapter — requests + the site's own Next.js data blob.
 
-Selectors target FincaRaiz's listing-detail and search-results markup as
-documented in docs/superpowers/specs/2026-07-19-portal-research-and-scraper-design.md:
-numeric-ID detail URLs, JSON-LD product data on the detail page, and a plain
-anchor grid on the search-results page.
+FincaRaiz server-renders a `<script id="__NEXT_DATA__">` JSON payload on
+both search-results and listing-detail pages. That payload already contains
+every field this project needs (price, bedrooms, bathrooms, garage, m2,
+lat/long, locality) in structured form, so this adapter parses that JSON
+directly instead of scraping visual markup — far more robust than CSS
+selectors against a page that can restyle at any time.
+
+URL patterns were confirmed against the live site 2026-07-19 (see the design
+spec): `/{operation}/{apartamentos|casas}/{locality}/bogota` for search,
+`/{slug}/{numeric id}` for listing detail.
 """
 from __future__ import annotations
 
 import json
 import re
 
-from bs4 import BeautifulSoup
-
 BASE_URL = "https://www.fincaraiz.com.co"
 
-_LOCALITY_PATHS = {
-    "usaquen": "apartamentos-y-casas/venta/bogota/usaquen",
-    "chapinero": "apartamentos-y-casas/venta/bogota/chapinero",
-    "suba": "apartamentos-y-casas/venta/bogota/suba",
-}
+_LOCALITIES = ("usaquen", "chapinero", "suba")
+_OPERATIONS = ("venta", "arriendo")
+_PROPERTY_PATHS = {"apartamento": "apartamentos", "casa": "casas"}
 
-_LISTING_HREF_RE = re.compile(r"/inmueble/.*-(\d+)$")
+_LISTING_PATH_RE = re.compile(r"/(\d+)/?$")
+_NEXT_DATA_RE = re.compile(
+    r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', re.S
+)
+
+_OPERATION_NAME_TO_CODE = {"venta": "venta", "arriendo": "arriendo"}
+_PROPERTY_NAME_TO_CODE = {
+    "apartamento": "apartamento",
+    "casa": "casa",
+    "duplex": "duplex",
+}
 
 
 class FincaRaizAdapter:
     portal_name = "fincaraiz"
 
     def search_urls(self, locality: str) -> list[str]:
-        try:
-            path = _LOCALITY_PATHS[locality]
-        except KeyError as exc:
-            raise ValueError(f"unknown locality: {locality!r}") from exc
-        return [f"{BASE_URL}/{path}"]
+        if locality not in _LOCALITIES:
+            raise ValueError(f"unknown locality: {locality!r}")
+        return [
+            f"{BASE_URL}/{operation}/{path}/{locality}/bogota"
+            for operation in _OPERATIONS
+            for path in _PROPERTY_PATHS.values()
+        ]
 
     def parse_listing_urls(self, search_page_html: str) -> list[str]:
-        soup = BeautifulSoup(search_page_html, "lxml")
+        try:
+            data = self._next_data(search_page_html)
+        except ValueError:
+            return []
+        try:
+            items = data["props"]["pageProps"]["fetchResult"]["searchFast"]["data"]
+        except (KeyError, TypeError):
+            return []
+
         urls: list[str] = []
         seen: set[str] = set()
-        for anchor in soup.select("a[href]"):
-            href = str(anchor["href"])
-            if not _LISTING_HREF_RE.search(href):
+        for item in items:
+            link = item.get("link")
+            if not link:
                 continue
-            full_url = href if href.startswith("http") else f"{BASE_URL}{href}"
+            full_url = link if link.startswith("http") else f"{BASE_URL}{link}"
             if full_url not in seen:
                 seen.add(full_url)
                 urls.append(full_url)
         return urls
 
     def parse_listing(self, listing_html: str, url: str) -> dict:
-        soup = BeautifulSoup(listing_html, "lxml")
-
-        listing_id_match = _LISTING_HREF_RE.search(url)
-        if not listing_id_match:
+        match = _LISTING_PATH_RE.search(_path_of(url))
+        if not match:
             raise ValueError(f"could not extract listing id from url: {url}")
-        portal_listing_id = listing_id_match.group(1)
+        portal_listing_id = match.group(1)
 
-        json_ld = self._extract_json_ld(soup)
+        data = self._next_data(listing_html)
+        try:
+            item = data["props"]["pageProps"]["data"]
+        except (KeyError, TypeError) as exc:
+            raise ValueError(f"missing __NEXT_DATA__ property payload: {url}") from exc
 
-        title = (json_ld.get("name") or self._text(soup, "h1") or "").strip()
-        description = (json_ld.get("description") or self._text(soup, "[data-testid='description']") or "").strip()
+        return self._item_to_raw(item, url, portal_listing_id)
 
-        offers = json_ld.get("offers") or {}
-        price = offers.get("price") or self._text(soup, "[data-testid='price']")
+    @staticmethod
+    def _item_to_raw(item: dict, url: str, portal_listing_id: str) -> dict:
+        price = (item.get("price") or {}).get("amount")
+        locality_name = (
+            (item.get("locations") or {}).get("location_main", {}).get("name")
+            or ""
+        ).lower()
+        # location_main is often a neighbourhood; fall back to scanning the
+        # locality list FincaRaiz nests under locations.locality.
+        localities = (item.get("locations") or {}).get("locality") or []
+        for loc in localities:
+            name = (loc.get("name") or "").lower()
+            if name in _LOCALITIES:
+                locality_name = name
+                break
 
-        photo_urls = self._photo_urls(json_ld, soup)
-
-        attrs = self._attributes(soup)
+        images = [img.get("image") for img in (item.get("images") or []) if img.get("image")]
+        if not images and item.get("img"):
+            images = [item["img"]]
 
         return {
             "portal_listing_id": portal_listing_id,
             "url": url,
-            "title": title,
-            "operation": attrs.get("operation", "venta"),
-            "property_type": attrs.get("property_type", "apartamento"),
-            "locality": attrs.get("locality", "usaquen"),
-            "address": attrs.get("address"),
+            "title": item.get("title") or "",
+            "operation": _OPERATION_NAME_TO_CODE.get(
+                ((item.get("operation_type") or {}).get("name") or "").lower(), "venta"
+            ),
+            "property_type": _PROPERTY_NAME_TO_CODE.get(
+                ((item.get("property_type") or {}).get("name") or "").lower(), "apartamento"
+            ),
+            "locality": locality_name if locality_name in _LOCALITIES else "usaquen",
+            "address": item.get("address"),
             "price": price,
-            "rooms": attrs.get("rooms"),
-            "bathrooms": attrs.get("bathrooms"),
-            "parking_spots": attrs.get("parking_spots"),
-            "area_m2": attrs.get("area_m2"),
-            "description": description,
-            "photo_urls": photo_urls,
+            "rooms": item.get("bedrooms"),
+            "bathrooms": item.get("bathrooms"),
+            "parking_spots": item.get("garage"),
+            "area_m2": item.get("m2") or item.get("m2Built"),
+            "description": item.get("description"),
+            "photo_urls": images,
             "floor_plan_urls": [],
-            "has_video": bool(soup.select_one("[data-testid='video-player'], video")),
+            "has_video": bool(item.get("has_video")),
+            "latitude": item.get("latitude"),
+            "longitude": item.get("longitude"),
         }
 
     @staticmethod
-    def _extract_json_ld(soup: BeautifulSoup) -> dict:
-        for tag in soup.select("script[type='application/ld+json']"):
-            try:
-                data = json.loads(tag.string or "")
-            except (json.JSONDecodeError, TypeError):
-                continue
-            if isinstance(data, dict) and data.get("@type") in ("Product", "House", "Apartment"):
-                return data
-        return {}
-
-    @staticmethod
-    def _text(soup: BeautifulSoup, selector: str) -> str | None:
-        node = soup.select_one(selector)
-        return node.get_text(strip=True) if node else None
-
-    @staticmethod
-    def _photo_urls(json_ld: dict, soup: BeautifulSoup) -> list[str]:
-        images = json_ld.get("image")
-        if isinstance(images, list) and images:
-            return images
-        if isinstance(images, str):
-            return [images]
-        return [str(img["src"]) for img in soup.select("[data-testid='gallery'] img[src]")]
-
-    @staticmethod
-    def _attributes(soup: BeautifulSoup) -> dict:
-        result: dict = {}
-        for item in soup.select("[data-testid='feature']"):
-            key = item.get("data-feature-key")
-            value = item.get_text(strip=True)
-            if not key:
-                continue
-            if key == "rooms":
-                result["rooms"] = _to_int(value)
-            elif key == "bathrooms":
-                result["bathrooms"] = _to_int(value)
-            elif key == "parking_spots":
-                result["parking_spots"] = _to_int(value)
-            elif key == "area_m2":
-                result["area_m2"] = _to_float(value)
-            elif key == "operation":
-                result["operation"] = value.lower()
-            elif key == "property_type":
-                result["property_type"] = value.lower()
-            elif key == "locality":
-                result["locality"] = value.lower()
-            elif key == "address":
-                result["address"] = value
-        return result
+    def _next_data(html: str) -> dict:
+        match = _NEXT_DATA_RE.search(html)
+        if not match:
+            raise ValueError("__NEXT_DATA__ script not found in page")
+        return json.loads(match.group(1))
 
 
-def _to_int(value: str) -> int | None:
-    match = re.search(r"\d+", value)
-    return int(match.group(0)) if match else None
-
-
-def _to_float(value: str) -> float | None:
-    match = re.search(r"[\d.]+", value)
-    return float(match.group(0)) if match else None
+def _path_of(url: str) -> str:
+    return url[len(BASE_URL):] if url.startswith(BASE_URL) else url

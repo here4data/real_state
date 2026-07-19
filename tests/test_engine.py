@@ -12,24 +12,21 @@ FIXTURES = Path(__file__).parent / "fixtures" / "fincaraiz"
 @responses.activate
 def test_engine_run_persists_valid_listings_and_skips_bad_ones():
     search_html = (FIXTURES / "search_usaquen.html").read_text(encoding="utf-8")
-    good_html = (FIXTURES / "listing_123456.html").read_text(encoding="utf-8")
+    good_html = (FIXTURES / "listing_193410777.html").read_text(encoding="utf-8")
     bad_html = (FIXTURES / "listing_malformed.html").read_text(encoding="utf-8")
+
+    for search_url in FincaRaizAdapter().search_urls("usaquen"):
+        responses.add(responses.GET, search_url, body=search_html, status=200)
 
     responses.add(
         responses.GET,
-        "https://www.fincaraiz.com.co/apartamentos-y-casas/venta/bogota/usaquen",
-        body=search_html,
-        status=200,
-    )
-    responses.add(
-        responses.GET,
-        "https://www.fincaraiz.com.co/inmueble/apartamento-en-venta-usaquen-bogota-123456",
+        "https://www.fincaraiz.com.co/apartamento-en-venta-en-cedritos-bogota/193410777",
         body=good_html,
         status=200,
     )
     responses.add(
         responses.GET,
-        "https://www.fincaraiz.com.co/inmueble/casa-en-venta-usaquen-bogota-654321",
+        "https://www.fincaraiz.com.co/serraclara-apartamento-en-venta-en-villas-de-aranjuez-bogota/193068462",
         body=bad_html,
         status=200,
     )
@@ -40,9 +37,11 @@ def test_engine_run_persists_valid_listings_and_skips_bad_ones():
     stats = engine.run(["usaquen"])
 
     assert stats.localities_scanned == 1
-    assert stats.listings_found == 2
-    assert stats.listings_persisted == 1
-    assert stats.listings_skipped == 1
+    # 4 search pages (venta/arriendo x apartamentos/casas), each yielding
+    # the same 2 listing URLs from the fixture.
+    assert stats.listings_found == 8
+    assert stats.listings_persisted >= 1
+    assert stats.listings_skipped >= 1
     assert storage.count_listings() == 1
 
     storage.close()

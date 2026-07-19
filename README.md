@@ -1,9 +1,31 @@
-# AI Real Estate Intelligence Bogotá — Scraper Engine
+# AI Real Estate Intelligence Bogotá
 
-First sub-project: a portal comparison matrix and a working scraper engine
-(fetch → parse → normalize → persist with history), proven end-to-end
-against one real portal, FincaRaíz. Design spec:
+A scraper engine + adapter architecture, proven end-to-end against FincaRaíz,
+feeding a static web GUI you can browse in the browser — no backend server,
+no build step. Design spec:
 [docs/superpowers/specs/2026-07-19-portal-research-and-scraper-design.md](docs/superpowers/specs/2026-07-19-portal-research-and-scraper-design.md).
+
+## Live site
+
+**https://here4data.github.io/real_state/**
+
+Search/filter panel over real, currently-listed properties in Usaquén,
+Chapinero and Suba — venta ≤ $1.000M COP, arriendo ≤ $7M COP, ≥3 habitaciones,
+≥1 parqueadero, apartamento/casa/dúplex (the filters fixed in the project
+brief). Deployed automatically from `docs/` by
+`.github/workflows/pages.yml` on every push to `main`.
+
+## Architecture
+
+```
+scraper/adapters/fincaraiz.py   # requests + the site's own __NEXT_DATA__ JSON
+scraper/engine.py               # discover -> fetch -> parse -> normalize -> persist
+scraper/normalizer.py           # raw dict -> canonical Listing (pydantic)
+scraper/storage/db.py           # SQLite: upsert-with-history
+scripts/build_dataset.py        # live scrape -> listings.db + docs/data/listings.json
+docs/                           # static GUI (GitHub Pages root): index.html, app.js, style.css
+tests/                          # unit + integration tests, offline fixtures
+```
 
 ## Setup
 
@@ -17,21 +39,17 @@ uv sync --extra dev
 uv run pytest -q
 ```
 
-## Run the FincaRaíz scraper
+## Refresh the dataset (live scrape)
 
-```python
-from scraper.adapters.fincaraiz import FincaRaizAdapter
-from scraper.engine import Engine
-from scraper.storage.db import Storage
-
-storage = Storage("listings.db")
-engine = Engine(FincaRaizAdapter(), storage)
-stats = engine.run(["usaquen", "chapinero", "suba"])
-print(stats)
+```bash
+uv run python scripts/build_dataset.py
 ```
 
-Listings and price/availability history persist to `listings.db`
-(`listings` = current state, `listing_snapshots` = append-only history).
+Scrapes FincaRaíz (rate-limited, 1 req/s) for Usaquén, Chapinero and Suba,
+persists full history to `listings.db` (`listings` = current state,
+`listing_snapshots` = append-only price/availability history), and writes
+the filtered dataset the GUI reads to `docs/data/listings.json`. Commit and
+push `docs/data/listings.json` to publish the refresh.
 
 ## Adding a new portal
 
@@ -39,10 +57,12 @@ Implement `scraper.adapters.base.PortalAdapter`'s three methods
 (`search_urls`, `parse_listing_urls`, `parse_listing`) in a new file under
 `scraper/adapters/`. `engine.py`, `normalizer.py`, and storage never change.
 
-## Status
+## Portal coverage
 
-This is a backend engine with no web frontend or hosted endpoint yet — there
-is no public link to click. It runs locally or in CI (`.github/workflows/ci.yml`)
-via the commands above. The map/dashboard frontend and GitHub Pages
-publishing are out of scope for this sub-project (see the design spec's
-"out of scope" section) and will ship as a separate sub-project.
+Per the design spec's research matrix, FincaRaíz, Ciencuadras and Habi.co are
+server-rendered and reachable with `requests` + JSON/HTML parsing (this
+sub-project ships FincaRaíz; Ciencuadras/Habi follow the same adapter
+pattern). Metrocuadrado, GoPlaceIt, Houm.co and La Haus are JS-rendered and
+need a Playwright-based fetch path — flagged in the spec as a separate
+future sub-project, since the adapter interface stays renderer-agnostic and
+requires no engine changes when that lands.
