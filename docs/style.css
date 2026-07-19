@@ -121,6 +121,7 @@ main {
   font-size: 0.8rem; color: var(--text-muted);
 }
 .card-attrs li:empty { display: none; }
+.card-attrs li.attr-missing { opacity: 0.55; font-style: italic; }
 
 .card-link {
   margin-top: auto;

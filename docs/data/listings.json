@@ -1,7 +1,7 @@
 {
-  "generated_at": "2026-07-19T17:28:32.855953+00:00",
+  "generated_at": "2026-07-19T17:35:26.731996+00:00",
   "generated_from_total_scraped": 557,
-  "count": 30,
+  "count": 34,
   "localities": [
     "usaquen",
     "chapinero",
@@ -76,7 +76,6 @@
   ],
   "filters": {
     "min_rooms": 3,
-    "min_parking": 1,
     "max_price_venta_cop": 1000000000,
     "max_price_arriendo_cop": 7000000
   },
@@ -127,7 +126,7 @@
       "segment_median_price_per_m2": 20408,
       "opportunity_score": 9.0,
       "good_price": true,
-      "opportunity_rank": 9
+      "opportunity_rank": 11
     },
     {
       "portal": "fincaraiz",
@@ -180,7 +179,7 @@
       "segment_median_price_per_m2": 49858,
       "opportunity_score": 33.9,
       "good_price": true,
-      "opportunity_rank": 2
+      "opportunity_rank": 3
     },
     {
       "portal": "fincaraiz",
@@ -242,7 +241,7 @@
       "segment_median_price_per_m2": 20408,
       "opportunity_score": -40.6,
       "good_price": false,
-      "opportunity_rank": 28
+      "opportunity_rank": 32
     },
     {
       "portal": "fincaraiz",
@@ -296,7 +295,7 @@
       "segment_median_price_per_m2": 20408,
       "opportunity_score": 0.0,
       "good_price": false,
-      "opportunity_rank": 14
+      "opportunity_rank": 17
     },
     {
       "portal": "fincaraiz",
@@ -342,7 +341,7 @@
       "segment_median_price_per_m2": 49858,
       "opportunity_score": -8.2,
       "good_price": false,
-      "opportunity_rank": 21
+      "opportunity_rank": 25
     },
     {
       "portal": "fincaraiz",
@@ -504,7 +503,7 @@
       "segment_median_price_per_m2": 49858,
       "opportunity_score": 12.0,
       "good_price": true,
-      "opportunity_rank": 7
+      "opportunity_rank": 9
     },
     {
       "portal": "fincaraiz",
@@ -559,7 +558,7 @@
       "segment_median_price_per_m2": 49858,
       "opportunity_score": -18.0,
       "good_price": false,
-      "opportunity_rank": 27
+      "opportunity_rank": 28
     },
     {
       "portal": "fincaraiz",
@@ -622,7 +621,7 @@
       "segment_median_price_per_m2": 23636,
       "opportunity_score": 15.4,
       "good_price": true,
-      "opportunity_rank": 4
+      "opportunity_rank": 6
     },
     {
       "portal": "fincaraiz",
@@ -680,7 +679,7 @@
       "segment_median_price_per_m2": 49858,
       "opportunity_score": -6.1,
       "good_price": false,
-      "opportunity_rank": 19
+      "opportunity_rank": 23
     },
     {
       "portal": "fincaraiz",
@@ -740,7 +739,7 @@
       "segment_median_price_per_m2": 20408,
       "opportunity_score": -44.8,
       "good_price": false,
-      "opportunity_rank": 29
+      "opportunity_rank": 33
     },
     {
       "portal": "fincaraiz",
@@ -799,7 +798,7 @@
       "segment_median_price_per_m2": 23636,
       "opportunity_score": 0.0,
       "good_price": false,
-      "opportunity_rank": 17
+      "opportunity_rank": 20
     },
     {
       "portal": "fincaraiz",
@@ -852,7 +851,7 @@
       "segment_median_price_per_m2": 23636,
       "opportunity_score": -47.7,
       "good_price": false,
-      "opportunity_rank": 30
+      "opportunity_rank": 34
     },
     {
       "portal": "fincaraiz",
@@ -896,10 +895,65 @@
       "in_declared_zone": null,
       "last_seen_at": "2026-07-19T17:10:39.344962+00:00",
       "price_per_m2": 4276923,
-      "segment_median_price_per_m2": 4580322,
-      "opportunity_score": 6.6,
+      "segment_median_price_per_m2": 4883721,
+      "opportunity_score": 12.4,
       "good_price": true,
-      "opportunity_rank": 11
+      "opportunity_rank": 8
+    },
+    {
+      "portal": "fincaraiz",
+      "portal_listing_id": "194007456",
+      "url": "https://www.fincaraiz.com.co/casa-en-venta-en-mirandela-bogota/194007456",
+      "title": "Casa en Venta en Mirandela, Bogotá",
+      "operation": "venta",
+      "property_type": "casa",
+      "locality": "suba",
+      "address": "villas del Norte II, Bogotá, Colombia",
+      "price_cop": 305000000,
+      "rooms": 3,
+      "bathrooms": 2,
+      "parking_spots": 0,
+      "area_m2": 59.0,
+      "description": "Casa de 3 pisos en venta en Mirandela – Villa del Norte II\n\nVive en una casa con espacios independientes, dentro de un conjunto cerrado y en un sector residencial del norte de Bogotá.\n\nEsta casa de tres pisos cuenta con 59 m², distribuidos en dos habitaciones amplias, una tercera habitación auxiliar ideal para un niño, estudio u oficina, espacio independiente para vestier, dos baños, cocina integral y patio o zona de ropas.\n\nAdemás, tiene un altillo amplio que puedes adaptar como zona de juegos, oficina, depósito o espacio adicional para compartir en familia.\n\nEl conjunto Villa del Norte II ofrece portería y vigilancia 24/7, circuito cerrado de televisión, salón social, zona BBQ, parque infantil, jardines y senderos interiores. Cuenta con parqueadero comunal asignado mediante sorteo.\n\nUbicada en el sector de Mirandela, una zona residencial y familiar, con fácil acceso a vías principales, transporte público, comercio, colegios, supermercados y servicios del norte de Bogotá.\n\n? Casa de 3 pisos\n? Área: 57,22 m²\n? Patio: 1,80 m²\n?️ 3 habitaciones\n? Espacio para vestier\n? 2 baños\n? Cocina integral\n? Altillo amplio\n? Parqueadero comunal por sorteo\n?️ Estrato 3\n? Año de construcción: 2003\n? Administración: $214.000\n? Precio de venta: $300 millones\n\nUna excelente alternativa para quienes prefieren la privacidad de una casa, con la seguridad y las zonas comunes de un conjunto cerrado.\n\nAgenda tu visita y conoce todo el potencial de esta propiedad.\nYanira Bienes Raíces",
+      "photo_urls": [
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b94322_infocdn__sjxqtpvzvgsv47xtvpbefrzrry8n6wftgbs8cr9qpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b034de_infocdn__lakgumzqyl3ag4wohvu7wfxgytxhyxoxpenpeoqbpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b9a586_infocdn__kfobrlynxgnz3rq7eunoz35mrqi5jyiz9z96ydmvpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15703901_infocdn__9dzgogvrfyjamimxyhtekdoh2grvy6iqpbpzgru9png.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15908a4e_infocdn__ogxs8g61vovu68ukovmyaqzo4wcuaikwewyr2lcfpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15ab8dbe_infocdn__h1rlt6iwtkxcz7oasszorez3ftct34csi2es4vehpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b06f8b_infocdn__ztr9ibhk6ytbrtk1bz28oxfion6erwwysseev7hfpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b0879c_infocdn__ztkvz3ae5cvqys42u04vgnczmpin3bci8i5hodgbpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc159b12c2_infocdn__u1ziehwtwpkyrpx0atczlxp1gfuw3scpvyc7sziapng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15992a6b_infocdn__zi2eo7puzxytakosjrs1bpijhibnmywdsdwnubrbpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15968745_infocdn__mdf9i6kb5idzq1sgsmbjxxahiouj4j4us6l4tsjqpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15adce9c_infocdn__hpt6ullc7iqrv6ywnz960ce5ikljcf2obmkeztffpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b05dd0_infocdn__b8sco4awog6dsis5xzzycuwuclwjit1rerbibucgpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15a6c3ad_infocdn__gq17e61uy5eibixdii2reiiosfjrevbd89mxvsd6png.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15ab7535_infocdn__al5hempi9ppu676bl4duwfi7rxae9o1gavvbvmqmpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15ab8c9e_infocdn__rdxx8lkreu5fxat3vy50fkk5xlcu8lkbgabk5hdlpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b4f6e2_infocdn__nfuqfcavry5s998hhevpqcmmvvdqgbt000rgbl1epng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b6c6a0_infocdn__tpsbdtvcpkunbdwsgr0mmiyiynu9xkayt8t5pmmapng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15ad2e42_infocdn__k9z0n6h0q5m1juqrdsxrx4ws4epyxunwonwy4vv3png.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b26ede_infocdn__ybfdbl72qqc9ng3f5awxksy6hugsj6owhvkzkuoypng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b0c75a_infocdn__c91wm5w3h9mhoyz8bzt3wk5r3ga5fhbvewbtb5ibpng.png",
+        "https://cdn2.infocasas.com.uy/repo/img/6a5bc15b9151f_infocdn__6trv55wtyumeqppzmwfbl46kkujevn7a1hrlgicapng.png"
+      ],
+      "has_video": false,
+      "latitude": 4.76915,
+      "longitude": -74.0509696,
+      "stratum": 3,
+      "floor": 0,
+      "floors_count": 3,
+      "construction_year": null,
+      "common_expenses_cop": 214000,
+      "in_declared_zone": null,
+      "last_seen_at": "2026-07-19T17:10:19.018026+00:00",
+      "price_per_m2": 5169492,
+      "segment_median_price_per_m2": 4883721,
+      "opportunity_score": -5.9,
+      "good_price": false,
+      "opportunity_rank": 22
     },
     {
       "portal": "fincaraiz",
@@ -944,10 +998,59 @@
       "in_declared_zone": true,
       "last_seen_at": "2026-07-19T17:10:44.384236+00:00",
       "price_per_m2": 5901408,
-      "segment_median_price_per_m2": 7230520,
-      "opportunity_score": 18.4,
+      "segment_median_price_per_m2": 7320640,
+      "opportunity_score": 19.4,
       "good_price": true,
-      "opportunity_rank": 3
+      "opportunity_rank": 5
+    },
+    {
+      "portal": "fincaraiz",
+      "portal_listing_id": "193681519",
+      "url": "https://www.fincaraiz.com.co/casa-en-venta-en-barrancas-norte-bogota/193681519",
+      "title": "Casa en Venta en Barrancas Norte, Bogotá",
+      "operation": "venta",
+      "property_type": "casa",
+      "locality": "usaquen",
+      "address": "carrera 7B # 161A 25",
+      "price_cop": 480000000,
+      "rooms": 4,
+      "bathrooms": 2,
+      "parking_spots": 0,
+      "area_m2": 190.0,
+      "description": "Casa en venta, Barrancas-Usaquén, un área que combina la tranquilidad residencial con un notable potencial comercial. Estrato 3. Su ubicación privilegiada y fácil acceso a vías como la carrera séptima. No pierda la oportunidad de explorar el potencial que ofrece este inmueble, que se convierte en un punto de partida ideal para su próximo proyecto.",
+      "photo_urls": [
+        "https://cdn2.infocasas.com.uy/repo/img/69fa616781132_infocdn__5193-1-1777321038jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa6167b3a76_infocdn__5193-2-1778016186jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa6167ef692_infocdn__5193-3-1778016186jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa61683211f_infocdn__5193-2-1777321036jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa616866a0c_infocdn__5193-3-1777321036jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa6168abf2d_infocdn__5193-4-1777321037jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa6168de885_infocdn__5193-5-1777321036jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa616917cb9_infocdn__5193-6-1777321038jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa61696193e_infocdn__5193-7-1777321039jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa6169bd1ea_infocdn__5193-8-1777321040jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa616a0b331_infocdn__5193-9-1777321039jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa616a30035_infocdn__5193-10-1777321041jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa616a79306_infocdn__5193-11-1777321041jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa616aac4dc_infocdn__5193-12-1777321042jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa616ace9ca_infocdn__5193-13-1777321042jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/69fa616b26a46_infocdn__5193-14-1777321046jpg.jpg"
+      ],
+      "has_video": true,
+      "latitude": 4.73710625653,
+      "longitude": -74.024613692437,
+      "stratum": 3,
+      "floor": 0,
+      "floors_count": 0,
+      "construction_year": null,
+      "common_expenses_cop": 0,
+      "in_declared_zone": true,
+      "last_seen_at": "2026-07-19T17:05:01.639111+00:00",
+      "price_per_m2": 2526316,
+      "segment_median_price_per_m2": 4605263,
+      "opportunity_score": 45.1,
+      "good_price": true,
+      "opportunity_rank": 2
     },
     {
       "portal": "fincaraiz",
@@ -1002,10 +1105,10 @@
       "in_declared_zone": true,
       "last_seen_at": "2026-07-19T17:04:23.870343+00:00",
       "price_per_m2": 6264368,
-      "segment_median_price_per_m2": 7230520,
-      "opportunity_score": 13.4,
+      "segment_median_price_per_m2": 7320640,
+      "opportunity_score": 14.4,
       "good_price": true,
-      "opportunity_rank": 5
+      "opportunity_rank": 7
     },
     {
       "portal": "fincaraiz",
@@ -1045,10 +1148,10 @@
       "in_declared_zone": null,
       "last_seen_at": "2026-07-19T17:07:27.008960+00:00",
       "price_per_m2": 7532468,
-      "segment_median_price_per_m2": 7230520,
-      "opportunity_score": -4.2,
+      "segment_median_price_per_m2": 7320640,
+      "opportunity_score": -2.9,
       "good_price": false,
-      "opportunity_rank": 18
+      "opportunity_rank": 21
     },
     {
       "portal": "fincaraiz",
@@ -1094,10 +1197,53 @@
       "in_declared_zone": null,
       "last_seen_at": "2026-07-19T17:10:38.258552+00:00",
       "price_per_m2": 4883721,
-      "segment_median_price_per_m2": 4580322,
-      "opportunity_score": -6.6,
+      "segment_median_price_per_m2": 4883721,
+      "opportunity_score": 0.0,
       "good_price": false,
-      "opportunity_rank": 20
+      "opportunity_rank": 19
+    },
+    {
+      "portal": "fincaraiz",
+      "portal_listing_id": "7347973",
+      "url": "https://www.fincaraiz.com.co/proyectos-vivienda/country-park-apartamentos-en-venta-en-floridablanca/7347973",
+      "title": "Country Park, Apartamentos en Venta en Floridablanca",
+      "operation": "venta",
+      "property_type": "apartamento",
+      "locality": "usaquen",
+      "address": "Transversal El Bosque No. 157  17-37",
+      "price_cop": 651537000,
+      "rooms": 3,
+      "bathrooms": 2,
+      "parking_spots": 0,
+      "area_m2": 89.0,
+      "description": "Localizado en el municipio de Floridablanca en el sector del BOSQUE, se encuentra localizado el nuevo desarrollo de MARVAL, el macro-proyecto EL COUNTRY. Se encuentra rodeado por un desarrollo urbanístico contemporáneo Parque Metropolitano del rio frio, sobre la nueva vía Transversal el Bosque. Además de servicios educativos y comerciales como: Foscal, Fosunab, Centro Medico Carlos Ardila Lulle, la Fundación Cardio-Vascular, la Universidad Autónoma de Bucaramanga.",
+      "photo_urls": [
+        "https://cdn2.infocasas.com.uy/repo/img/6670713dbecbe_infocdn__rjifwjob3akvnrxxykwr10wkq4csnuuxoye1muc8jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/667057b02886f_infocdn__wgg08wacvihl1gvxmqd5sgrxd9ofwjfnmhm5zrd7jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/667057afeba12_infocdn__jxuhfa65i6fsawtrbz4mrzv2hdyj9wwvkbhv3gfbjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6670713de1cd2_infocdn__xa8poryy4onvdmlr6dd4jwumbwan98mqsay2kwlojpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6670713de7a57_infocdn__yalf4y1l81xp2uhebhlo2azckaphwwsjlzmwht1xjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/667057afe26d3_infocdn__tkamubhzbm24bdz4asvalnivi2trw5ydg9byxeomjpg.jpg",
+        "https://s3.amazonaws.com/imagenesprof.fincaraiz.com.co/OVFR_COL/2022/6/3/3717980_835_6.jpg",
+        "https://s3.amazonaws.com/imagenesprof.fincaraiz.com.co/OVFR_COL/2022/6/3/3717980_487_2.jpg",
+        "https://s3.amazonaws.com/imagenesprof.fincaraiz.com.co/OVFR_COL/2022/6/3/3717980_659_3.jpg",
+        "https://s3.amazonaws.com/imagenesprof.fincaraiz.com.co/OVFR_COL/2022/6/3/3717980_617_5.jpg"
+      ],
+      "has_video": true,
+      "latitude": 7.06898641586304,
+      "longitude": -73.1194686889648,
+      "stratum": 5,
+      "floor": null,
+      "floors_count": 0,
+      "construction_year": null,
+      "common_expenses_cop": 0,
+      "in_declared_zone": null,
+      "last_seen_at": "2026-07-19T17:10:58.352943+00:00",
+      "price_per_m2": 7320640,
+      "segment_median_price_per_m2": 7320640,
+      "opportunity_score": 0.0,
+      "good_price": false,
+      "opportunity_rank": 16
     },
     {
       "portal": "fincaraiz",
@@ -1135,10 +1281,10 @@
       "in_declared_zone": true,
       "last_seen_at": "2026-07-19T17:05:00.541616+00:00",
       "price_per_m2": 4400000,
-      "segment_median_price_per_m2": 5037438,
-      "opportunity_score": 12.7,
-      "good_price": true,
-      "opportunity_rank": 6
+      "segment_median_price_per_m2": 4605263,
+      "opportunity_score": 4.5,
+      "good_price": false,
+      "opportunity_rank": 14
     },
     {
       "portal": "fincaraiz",
@@ -1198,10 +1344,10 @@
       "in_declared_zone": true,
       "last_seen_at": "2026-07-19T17:05:08.693421+00:00",
       "price_per_m2": 5583333,
-      "segment_median_price_per_m2": 5037438,
-      "opportunity_score": -10.8,
+      "segment_median_price_per_m2": 4605263,
+      "opportunity_score": -21.2,
       "good_price": false,
-      "opportunity_rank": 24
+      "opportunity_rank": 30
     },
     {
       "portal": "fincaraiz",
@@ -1259,10 +1405,10 @@
       "in_declared_zone": null,
       "last_seen_at": "2026-07-19T17:10:47.652123+00:00",
       "price_per_m2": 7906977,
-      "segment_median_price_per_m2": 7230520,
-      "opportunity_score": -9.4,
+      "segment_median_price_per_m2": 7320640,
+      "opportunity_score": -8.0,
       "good_price": false,
-      "opportunity_rank": 23
+      "opportunity_rank": 24
     },
     {
       "portal": "fincaraiz",
@@ -1314,10 +1460,10 @@
       "in_declared_zone": null,
       "last_seen_at": "2026-07-19T17:07:08.737982+00:00",
       "price_per_m2": 8500000,
-      "segment_median_price_per_m2": 7230520,
-      "opportunity_score": -17.6,
+      "segment_median_price_per_m2": 7320640,
+      "opportunity_score": -16.1,
       "good_price": false,
-      "opportunity_rank": 26
+      "opportunity_rank": 27
     },
     {
       "portal": "fincaraiz",
@@ -1377,10 +1523,10 @@
       "in_declared_zone": true,
       "last_seen_at": "2026-07-19T17:04:58.357076+00:00",
       "price_per_m2": 4605263,
-      "segment_median_price_per_m2": 5037438,
-      "opportunity_score": 8.6,
-      "good_price": true,
-      "opportunity_rank": 10
+      "segment_median_price_per_m2": 4605263,
+      "opportunity_score": 0.0,
+      "good_price": false,
+      "opportunity_rank": 15
     },
     {
       "portal": "fincaraiz",
@@ -1426,10 +1572,10 @@
       "in_declared_zone": true,
       "last_seen_at": "2026-07-19T17:10:05.452225+00:00",
       "price_per_m2": 6379310,
-      "segment_median_price_per_m2": 6379310,
-      "opportunity_score": 0.0,
-      "good_price": false,
-      "opportunity_rank": 16
+      "segment_median_price_per_m2": 9064328,
+      "opportunity_score": 29.6,
+      "good_price": true,
+      "opportunity_rank": 4
     },
     {
       "portal": "fincaraiz",
@@ -1477,10 +1623,10 @@
       "in_declared_zone": true,
       "last_seen_at": "2026-07-19T17:04:41.426442+00:00",
       "price_per_m2": 6578947,
-      "segment_median_price_per_m2": 7230520,
-      "opportunity_score": 9.0,
+      "segment_median_price_per_m2": 7320640,
+      "opportunity_score": 10.1,
       "good_price": true,
-      "opportunity_rank": 8
+      "opportunity_rank": 10
     },
     {
       "portal": "fincaraiz",
@@ -1531,10 +1677,56 @@
       "in_declared_zone": null,
       "last_seen_at": "2026-07-19T17:04:39.244556+00:00",
       "price_per_m2": 8039216,
-      "segment_median_price_per_m2": 7230520,
-      "opportunity_score": -11.2,
+      "segment_median_price_per_m2": 7320640,
+      "opportunity_score": -9.8,
       "good_price": false,
-      "opportunity_rank": 25
+      "opportunity_rank": 26
+    },
+    {
+      "portal": "fincaraiz",
+      "portal_listing_id": "193658395",
+      "url": "https://www.fincaraiz.com.co/alejandria-vintage-apartamento-en-venta-en-mazuren-bogota/193658395",
+      "title": "Alejandria Vintage, Apartamentos en Venta en Mazuren, Bogotá",
+      "operation": "venta",
+      "property_type": "apartamento",
+      "locality": "suba",
+      "address": "Conjunto Residencial Vintage Alejandría, Carrera 54 #153-75, Bogotá, Colombia",
+      "price_cop": 900000000,
+      "rooms": 3,
+      "bathrooms": 2,
+      "parking_spots": 0,
+      "area_m2": 76.6,
+      "description": "Descubre un proyecto residencial que redefine el concepto de bienestar y exclusividad. Disfruta de más de 10 zonas comunes diseñadas para elevar tu calidad de vida, incluyendo piscina cubierta climatizada, sauna, turco y espacios pensados para el descanso, la relajación y la recreación.\n\nUbicado estratégicamente en el norte de la ciudad (Cra. 54 #153-75), en un entorno residencial tranquilo y de alta valorización, este proyecto ofrece el equilibrio perfecto entre privacidad y conectividad.\n\nSu cercanía a reconocidos puntos de interés como el Carmel Club, Centro Comercial San Rafael, Centro Comercial Santa Fe, Portoalegre y la Clínica La Colina, garantiza comodidad y acceso a servicios de primer nivel.\n\nOfrece una amplia variedad de áreas construidas (desde los 77.85 m2 a los 149.3 m2), adaptándose a diferentes estilos de vida y necesidades familiares, con un alto potencial de valorización.",
+      "photo_urls": [
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1f895_infocdn__nisvqicnnisupuw7cbthrbfnuxfxrdto9jshcdbejpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1f002_infocdn__2xmqotltxhqzzk288br8yssezkntubtfwor3ib3wjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1ae9e_infocdn__g7pmuhxiahe59ssk6snq9cjyflt0mpyqmzvnorrkjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1dd7f_infocdn__zs0yxndl5ygvoifr0ucnrsaqrmvrcuo7hckprdmljpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1fb80_infocdn__jkpqrzmamqadws6avhhmomidrdb5ncd5ckxtdyunjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d2055d_infocdn__h83j6lo7o1sqqvonj3ysirypphlmi8ijweyqpocmjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1ddc0_infocdn__xlomrbit2gqgscl4jhlxsajwurawzcpg9ubmgnprjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1e66e_infocdn__6cjyhpxvd9uce3mizmovbilbpx0rpzaohdkkoszxjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1b260_infocdn__eyoiye34ryep6dlwnuijcxe5hdzf38pn4ftegljtjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1cd7c_infocdn__ntu3ri8cmmecftpclqcesc4ursuzt2x3hy5dxycajpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d3eae3_infocdn__b0hnfnbqpesl9uz7nqzjg1kei5e6ujvtq5wuadm7jpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595d1df57_infocdn__p5uryqxbxmv5nl0skwbmt29ur47br580yn4nfe6fjpg.jpg",
+        "https://cdn2.infocasas.com.uy/repo/img/6a1f595cf08af_infocdn__91dlbmrvcaa5xhsexly00salkzpwgfpdgfn6r15ejpg.jpg"
+      ],
+      "has_video": false,
+      "latitude": 4.7399702,
+      "longitude": -74.0545665,
+      "stratum": 5,
+      "floor": null,
+      "floors_count": 0,
+      "construction_year": null,
+      "common_expenses_cop": 0,
+      "in_declared_zone": true,
+      "last_seen_at": "2026-07-19T17:09:46.987973+00:00",
+      "price_per_m2": 11749347,
+      "segment_median_price_per_m2": 9064328,
+      "opportunity_score": -29.6,
+      "good_price": false,
+      "opportunity_rank": 31
     },
     {
       "portal": "fincaraiz",
@@ -1585,7 +1777,7 @@
       "segment_median_price_per_m2": 8571429,
       "opportunity_score": 0.0,
       "good_price": false,
-      "opportunity_rank": 15
+      "opportunity_rank": 18
     },
     {
       "portal": "fincaraiz",
@@ -1645,9 +1837,9 @@
       "in_declared_zone": null,
       "last_seen_at": "2026-07-19T17:07:22.058758+00:00",
       "price_per_m2": 6928571,
-      "segment_median_price_per_m2": 7230520,
-      "opportunity_score": 4.2,
-      "good_price": false,
+      "segment_median_price_per_m2": 7320640,
+      "opportunity_score": 5.4,
+      "good_price": true,
       "opportunity_rank": 13
     },
     {
@@ -1705,10 +1897,10 @@
       "in_declared_zone": true,
       "last_seen_at": "2026-07-19T17:05:15.220090+00:00",
       "price_per_m2": 5469613,
-      "segment_median_price_per_m2": 5037438,
-      "opportunity_score": -8.6,
+      "segment_median_price_per_m2": 4605263,
+      "opportunity_score": -18.8,
       "good_price": false,
-      "opportunity_rank": 22
+      "opportunity_rank": 29
     }
   ]
 }

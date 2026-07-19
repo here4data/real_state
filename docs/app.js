@@ -5,7 +5,6 @@
     propertyType: document.getElementById("propertyType"),
     maxPrice: document.getElementById("maxPrice"),
     minRooms: document.getElementById("minRooms"),
-    minParking: document.getElementById("minParking"),
     portal: document.getElementById("portal"),
     sortBy: document.getElementById("sortBy"),
     results: document.getElementById("results"),
@@ -66,7 +65,6 @@
     const propertyType = els.propertyType.value;
     const maxPrice = parseFloat(els.maxPrice.value);
     const minRooms = parseInt(els.minRooms.value, 10) || 0;
-    const minParking = parseInt(els.minParking.value, 10) || 0;
     const portal = els.portal.value;
 
     let filtered = listings.filter((l) => {
@@ -76,7 +74,6 @@
       if (propertyType && l.property_type !== propertyType) return false;
       if (!Number.isNaN(maxPrice) && l.price_cop > maxPrice) return false;
       if ((l.rooms ?? 0) < minRooms) return false;
-      if ((l.parking_spots ?? 0) < minParking) return false;
       return true;
     });
 
@@ -139,33 +136,32 @@
       score.textContent = "";
     }
 
-    node.querySelector(".attr-rooms").textContent = listing.rooms
-      ? `${listing.rooms} hab.`
-      : "";
-    node.querySelector(".attr-bathrooms").textContent = listing.bathrooms
-      ? `${listing.bathrooms} baños`
-      : "";
-    node.querySelector(".attr-parking").textContent = listing.parking_spots
-      ? `${listing.parking_spots} parq.`
-      : "";
-    node.querySelector(".attr-area").textContent = listing.area_m2
-      ? `${listing.area_m2} m²`
-      : "";
-    node.querySelector(".attr-ppm2").textContent = listing.price_per_m2
-      ? `${COP_FORMATTER.format(listing.price_per_m2)}/m²`
-      : "";
-    node.querySelector(".attr-stratum").textContent = listing.stratum
-      ? `Estrato ${listing.stratum}`
-      : "";
-    node.querySelector(".attr-expenses").textContent = listing.common_expenses_cop
-      ? `Admin. ${COP_FORMATTER.format(listing.common_expenses_cop)}`
-      : "";
+    setAttr(node, ".attr-rooms", listing.rooms, (v) => `${v} hab.`, "Hab.: sin información");
+    setAttr(node, ".attr-bathrooms", listing.bathrooms, (v) => `${v} baños`, "Baños: sin información");
+    setAttr(node, ".attr-parking", listing.parking_spots, (v) => `${v} parq.`, "Parq.: sin información");
+    setAttr(node, ".attr-area", listing.area_m2, (v) => `${v} m²`, "Área: sin información");
+    setAttr(node, ".attr-ppm2", listing.price_per_m2, (v) => `${COP_FORMATTER.format(v)}/m²`, "Precio/m²: sin información");
+    setAttr(node, ".attr-stratum", listing.stratum, (v) => `Estrato ${v}`, "Estrato: sin información");
+    setAttr(
+      node,
+      ".attr-expenses",
+      listing.common_expenses_cop,
+      (v) => `Admin. ${COP_FORMATTER.format(v)}`,
+      "Admin.: sin información"
+    );
 
     const link = node.querySelector(".card-link");
     link.href = listing.url;
     link.textContent = `Ver en ${capitalize(listing.portal)} →`;
 
     return node;
+  }
+
+  function setAttr(node, selector, value, formatter, missingText) {
+    const el = node.querySelector(selector);
+    const present = value !== null && value !== undefined && value !== 0;
+    el.textContent = present ? formatter(value) : missingText;
+    el.classList.toggle("attr-missing", !present);
   }
 
   function formatPrice(listing) {
@@ -207,7 +203,6 @@
     els.propertyType,
     els.maxPrice,
     els.minRooms,
-    els.minParking,
     els.portal,
     els.sortBy,
   ]) {

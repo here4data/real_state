@@ -27,7 +27,6 @@ OUTPUT_PATH = Path(__file__).resolve().parents[1] / "docs" / "data" / "listings.
 MAX_PRICE_VENTA = 1_000_000_000
 MAX_PRICE_ARRIENDO = 7_000_000
 MIN_ROOMS = 3
-MIN_PARKING = 1
 
 # Project brief's approximate geo box: Calle 80-134, Carrera 2-60.
 CALLE_MIN, CALLE_MAX = 80, 134
@@ -57,8 +56,6 @@ def geo_zone_check(address: str | None) -> bool | None:
 
 def passes_brief_filters(row) -> bool:
     if row["rooms"] is None or row["rooms"] < MIN_ROOMS:
-        return False
-    if row["parking_spots"] is None or row["parking_spots"] < MIN_PARKING:
         return False
     if row["operation"] == "venta" and row["price_cop"] > MAX_PRICE_VENTA:
         return False
@@ -165,7 +162,6 @@ def main() -> None:
                 "portals": registry_summary(),
                 "filters": {
                     "min_rooms": MIN_ROOMS,
-                    "min_parking": MIN_PARKING,
                     "max_price_venta_cop": MAX_PRICE_VENTA,
                     "max_price_arriendo_cop": MAX_PRICE_ARRIENDO,
                 },
