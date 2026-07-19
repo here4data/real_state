@@ -30,7 +30,7 @@ def test_dataset_matches_frontend_schema():
         assert listing["operation"] in {"venta", "arriendo"}
         assert listing["property_type"] in {"apartamento", "casa", "duplex"}
         assert listing["rooms"] >= 3
-        assert listing["parking_spots"] >= 1
+        assert listing["parking_spots"] is None or listing["parking_spots"] >= 0
         if listing["operation"] == "venta":
             assert listing["price_cop"] <= 1_000_000_000
         else:

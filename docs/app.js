@@ -14,12 +14,27 @@
     emptyState: document.getElementById("emptyState"),
     errorState: document.getElementById("errorState"),
     cardTemplate: document.getElementById("cardTemplate"),
+    downloadOportunities: document.getElementById("downloadOportunities"),
   };
 
   const COP_FORMATTER = new Intl.NumberFormat("es-CO", {
     style: "currency",
     currency: "COP",
     maximumFractionDigits: 0,
+  });
+
+  const greenIcon = L.icon({
+    iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 25 41' width='25' height='41'%3E%3Cpath fill='%231a7f37' d='M12.5 0c6.904 0 12.5 5.596 12.5 12.5 0 7-12.5 28.5-12.5 28.5S0 19.5 0 12.5C0 5.596 5.596 0 12.5 0z'/%3E%3C/svg%3E",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    className: "green-pin",
+  });
+  const blueIcon = L.icon({
+    iconUrl: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 25 41' width='25' height='41'%3E%3Cpath fill='%234da3ff' d='M12.5 0c6.904 0 12.5 5.596 12.5 12.5 0 7-12.5 28.5-12.5 28.5S0 19.5 0 12.5C0 5.596 5.596 0 12.5 0z'/%3E%3C/svg%3E",
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
   });
 
   let listings = [];
@@ -42,11 +57,14 @@
     const bounds = [];
     for (const l of filtered) {
       if (l.latitude == null || l.longitude == null) continue;
-      const marker = L.marker([l.latitude, l.longitude]).bindPopup(
+      const isGoodDeal = l.good_price;
+      const marker = L.marker([l.latitude, l.longitude], {
+        icon: isGoodDeal ? greenIcon : blueIcon,
+      }).bindPopup(
         `<strong>${escapeHtml(l.title || "")}</strong><br>` +
           `${formatPrice(l)}<br>` +
           `${l.rooms ?? "?"} hab · ${l.area_m2 ?? "?"} m² · ${escapeHtml(l.portal)}<br>` +
-          (l.opportunity_rank ? `Ranking oportunidad: #${l.opportunity_rank}<br>` : "") +
+          (l.opportunity_rank ? `<span style="color:#1a7f37;font-weight:bold">✓ #${l.opportunity_rank} mejor oportunidad</span><br>` : "") +
           `<a href="${l.url}" target="_blank" rel="noopener">Ver anuncio →</a>`
       );
       markerLayer.addLayer(marker);
@@ -173,6 +191,75 @@
     return s ? s.charAt(0).toUpperCase() + s.slice(1) : "";
   }
 
+  function downloadOportunities() {
+    const opportunities = listings.filter((l) => l.good_price).sort((a, b) => a.opportunity_rank - b.opportunity_rank);
+    if (!opportunities.length) {
+      alert("No hay oportunidades para descargar");
+      return;
+    }
+    const headers = [
+      "Rank",
+      "Título",
+      "Portal",
+      "URL",
+      "Localidad",
+      "Operación",
+      "Tipo",
+      "Precio COP",
+      "Área m²",
+      "Precio/m²",
+      "Habitaciones",
+      "Baños",
+      "Parqueaderos",
+      "Estrato",
+      "Admin COP",
+      "Piso",
+      "Pisos totales",
+      "Construcción",
+      "Segmento",
+      "Mediana Segmento",
+      "Descuento vs Mediana %",
+      "Opportunity Score",
+    ];
+    const rows = opportunities.map((l) => [
+      l.opportunity_rank || "",
+      l.title || "",
+      l.portal || "",
+      l.url || "",
+      l.locality || "",
+      l.operation || "",
+      l.property_type || "",
+      l.price_cop || "",
+      l.area_m2 || "",
+      (l.price_per_m2 || "").toFixed(0),
+      l.rooms || "",
+      l.bathrooms || "",
+      l.parking_spots || "N/A",
+      l.stratum || "N/A",
+      l.common_expenses_cop || "N/A",
+      l.floor || "N/A",
+      l.floors_count || "N/A",
+      l.construction_year || "N/A",
+      `${l.operation}_${l.property_type}_${l.locality}`,
+      l.segment_median || "N/A",
+      ((l.opportunity_score || 0) * -1).toFixed(2),
+      (l.opportunity_score || 0).toFixed(2),
+    ]);
+    const csv =
+      [headers, ...rows]
+        .map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(","))
+        .join("\n") +
+      "\n\n## Definiciones\n" +
+      '## Descuento = (1 - (Precio/m² / Mediana)) * 100\n' +
+      '## Opportunity Score = Descuento negativo si es más caro, positivo si es más barato\n' +
+      "## Segmento = Operación_Tipo de Propiedad_Localidad\n";
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `oportunidades-${new Date().toISOString().split("T")[0]}.csv`;
+    link.click();
+  }
+
   async function init() {
     try {
       const res = await fetch("data/listings.json", { cache: "no-store" });
@@ -207,6 +294,10 @@
     els.sortBy,
   ]) {
     el.addEventListener("input", render);
+  }
+
+  if (els.downloadOportunities) {
+    els.downloadOportunities.addEventListener("click", downloadOportunities);
   }
 
   initMap();
