@@ -80,6 +80,42 @@ class HabiAdapter(GenericPortalAdapter):
         return [u for u in super().search_urls(locality) if "arriendo" not in u]
 
 
+class GoPlaceItAdapter(GenericPortalAdapter):
+    portal_name = "goplaceit"
+    base_url = "https://www.goplaceit.com"
+    status = "needs_js"
+    status_note = "React SPA; requests may get a shell. Confirmed non-aggregator, stable IDs."
+    property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
+    listing_href_re = re.compile(r'href="((?:https://www\.goplaceit\.com)?/inmueble/[^"]+)"')
+
+    def search_path(self, operation, property_path, locality):
+        return f"/{operation}-{property_path}/bogota/{locality}"
+
+
+class HoumAdapter(GenericPortalAdapter):
+    portal_name = "houm"
+    base_url = "https://www.houm.com"
+    status = "needs_js"
+    status_note = "Next.js JS shell; rental-skewed; explicitly allowlists AI bots in robots.txt."
+    property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
+    listing_href_re = re.compile(r'href="((?:https://www\.houm\.com)?/(?:arriendo|venta)/[^"]+)"')
+
+    def search_path(self, operation, property_path, locality):
+        return f"/{operation}/{property_path}/bogota/{locality}"
+
+
+class LaHausAdapter(GenericPortalAdapter):
+    portal_name = "lahaus"
+    base_url = "https://www.lahaus.com"
+    status = "needs_js"
+    status_note = "Hybrid render, hydration gaps; new-dev niche, weakest URL stability of the 7."
+    property_paths = {"apartamento": "apartamentos", "casa": "casas", "duplex": "apartamentos"}
+    listing_href_re = re.compile(r'href="((?:https://www\.lahaus\.com)?/inmueble/[^"]+)"')
+
+    def search_path(self, operation, property_path, locality):
+        return f"/{operation}/{property_path}/bogota/{locality}"
+
+
 class MercadoLibreAdapter(GenericPortalAdapter):
     portal_name = "mercadolibre"
     base_url = "https://listado.mercadolibre.com.co"
@@ -130,6 +166,9 @@ ALL_ADAPTERS = [
     ProperatiAdapter(),
     Inmuebles24Adapter(),
     HabiAdapter(),
+    GoPlaceItAdapter(),
+    HoumAdapter(),
+    LaHausAdapter(),
     MercadoLibreAdapter(),
     EstrenarViviendaAdapter(),
     MitulaAdapter(),

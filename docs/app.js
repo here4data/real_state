@@ -121,6 +121,9 @@
     badge.textContent = listing.operation;
     badge.classList.add(listing.operation);
 
+    const article = node.querySelector(".card");
+    if (listing.good_price) article.classList.add("good-price");
+
     node.querySelector(".card-title").textContent = listing.title || "(sin título)";
     node.querySelector(".card-address").textContent =
       listing.address || capitalize(listing.locality);
@@ -150,6 +153,12 @@
       : "";
     node.querySelector(".attr-ppm2").textContent = listing.price_per_m2
       ? `${COP_FORMATTER.format(listing.price_per_m2)}/m²`
+      : "";
+    node.querySelector(".attr-stratum").textContent = listing.stratum
+      ? `Estrato ${listing.stratum}`
+      : "";
+    node.querySelector(".attr-expenses").textContent = listing.common_expenses_cop
+      ? `Admin. ${COP_FORMATTER.format(listing.common_expenses_cop)}`
       : "";
 
     const link = node.querySelector(".card-link");

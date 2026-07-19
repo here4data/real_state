@@ -50,6 +50,13 @@ class Listing(BaseModel):
     latitude: Optional[float] = None
     longitude: Optional[float] = None
 
+    # "Phase 2" enrichment — not every portal exposes these.
+    stratum: Optional[int] = None
+    floor: Optional[int] = None
+    floors_count: Optional[int] = None
+    construction_year: Optional[int] = None
+    common_expenses_cop: Optional[int] = None
+
     scraped_at: datetime
 
     @field_validator("price_cop")

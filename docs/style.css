@@ -168,3 +168,13 @@ footer a { color: var(--accent); }
 }
 .card-score.good-deal { color: #1a7f37; }
 .card-score.above-median { color: #b35900; }
+.card.good-price {
+  border-color: #1a7f37;
+  box-shadow: 0 0 0 1px #1a7f37 inset;
+}
+.card.good-price .card-title::after {
+  content: " ✓ Buen precio";
+  color: #1a7f37;
+  font-size: 0.75rem;
+  font-weight: 700;
+}

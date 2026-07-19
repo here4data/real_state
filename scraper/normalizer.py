@@ -58,6 +58,11 @@ def normalize(raw: dict, *, portal: str, now: datetime | None = None) -> Listing
             has_video=bool(raw.get("has_video", False)),
             latitude=raw.get("latitude"),
             longitude=raw.get("longitude"),
+            stratum=raw.get("stratum"),
+            floor=raw.get("floor"),
+            floors_count=raw.get("floors_count"),
+            construction_year=raw.get("construction_year"),
+            common_expenses_cop=raw.get("common_expenses_cop"),
             scraped_at=now or datetime.now(timezone.utc),
         )
     except KeyError as exc:

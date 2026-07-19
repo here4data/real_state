@@ -18,6 +18,11 @@ CREATE TABLE IF NOT EXISTS listings (
     has_video INTEGER NOT NULL DEFAULT 0,
     latitude REAL,
     longitude REAL,
+    stratum INTEGER,
+    floor INTEGER,
+    floors_count INTEGER,
+    construction_year INTEGER,
+    common_expenses_cop INTEGER,
     first_seen_at TEXT NOT NULL,
     last_seen_at TEXT NOT NULL,
     PRIMARY KEY (portal, portal_listing_id)

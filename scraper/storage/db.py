@@ -35,8 +35,9 @@ class Storage:
                 portal, portal_listing_id, url, title, operation, property_type,
                 locality, address, price_cop, rooms, bathrooms, parking_spots,
                 area_m2, description, photo_urls, floor_plan_urls, has_video,
-                latitude, longitude, first_seen_at, last_seen_at
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                latitude, longitude, stratum, floor, floors_count,
+                construction_year, common_expenses_cop, first_seen_at, last_seen_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             ON CONFLICT (portal, portal_listing_id) DO UPDATE SET
                 url=excluded.url, title=excluded.title, operation=excluded.operation,
                 property_type=excluded.property_type, locality=excluded.locality,
@@ -46,6 +47,10 @@ class Storage:
                 description=excluded.description, photo_urls=excluded.photo_urls,
                 floor_plan_urls=excluded.floor_plan_urls, has_video=excluded.has_video,
                 latitude=excluded.latitude, longitude=excluded.longitude,
+                stratum=excluded.stratum, floor=excluded.floor,
+                floors_count=excluded.floors_count,
+                construction_year=excluded.construction_year,
+                common_expenses_cop=excluded.common_expenses_cop,
                 last_seen_at=excluded.last_seen_at
             """,
             (
@@ -68,6 +73,11 @@ class Storage:
                 int(listing.has_video),
                 listing.latitude,
                 listing.longitude,
+                listing.stratum,
+                listing.floor,
+                listing.floors_count,
+                listing.construction_year,
+                listing.common_expenses_cop,
                 scraped_at,
                 scraped_at,
             ),

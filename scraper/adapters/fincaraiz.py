@@ -130,6 +130,11 @@ class FincaRaizAdapter:
             "has_video": bool(item.get("has_video")),
             "latitude": item.get("latitude"),
             "longitude": item.get("longitude"),
+            "stratum": item.get("stratum"),
+            "floor": item.get("floor"),
+            "floors_count": item.get("floorsCount"),
+            "construction_year": item.get("construction_year"),
+            "common_expenses_cop": (item.get("commonExpenses") or {}).get("amount"),
         }
 
     @staticmethod

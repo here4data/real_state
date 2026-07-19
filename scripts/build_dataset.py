@@ -9,6 +9,7 @@ COP, property type in {apartamento, casa, duplex}.
 from __future__ import annotations
 
 import json
+import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,6 +29,31 @@ MAX_PRICE_ARRIENDO = 7_000_000
 MIN_ROOMS = 3
 MIN_PARKING = 1
 
+# Project brief's approximate geo box: Calle 80-134, Carrera 2-60.
+CALLE_MIN, CALLE_MAX = 80, 134
+CARRERA_MIN, CARRERA_MAX = 2, 60
+
+_CALLE_RE = re.compile(r"\b(?:calle|cl|cll)\.?\s*(\d{1,3})", re.I)
+_CARRERA_RE = re.compile(r"\b(?:carrera|cra|kr|cr)\.?\s*(\d{1,3})", re.I)
+
+
+def geo_zone_check(address: str | None) -> bool | None:
+    """True/False when the address text lets us verify the Calle 80-134 /
+    Carrera 2-60 box; None when the address has no parseable street number
+    (kept, not excluded, rather than silently dropping most listings)."""
+    if not address:
+        return None
+    calle_m = _CALLE_RE.search(address)
+    carrera_m = _CARRERA_RE.search(address)
+    if not calle_m and not carrera_m:
+        return None
+    ok = True
+    if calle_m:
+        ok = ok and CALLE_MIN <= int(calle_m.group(1)) <= CALLE_MAX
+    if carrera_m:
+        ok = ok and CARRERA_MIN <= int(carrera_m.group(1)) <= CARRERA_MAX
+    return ok
+
 
 def passes_brief_filters(row) -> bool:
     if row["rooms"] is None or row["rooms"] < MIN_ROOMS:
@@ -37,6 +63,8 @@ def passes_brief_filters(row) -> bool:
     if row["operation"] == "venta" and row["price_cop"] > MAX_PRICE_VENTA:
         return False
     if row["operation"] == "arriendo" and row["price_cop"] > MAX_PRICE_ARRIENDO:
+        return False
+    if geo_zone_check(row["address"]) is False:
         return False
     return True
 
@@ -61,6 +89,12 @@ def row_to_dict(row) -> dict:
         "has_video": bool(row["has_video"]),
         "latitude": row["latitude"],
         "longitude": row["longitude"],
+        "stratum": row["stratum"],
+        "floor": row["floor"],
+        "floors_count": row["floors_count"],
+        "construction_year": row["construction_year"],
+        "common_expenses_cop": row["common_expenses_cop"],
+        "in_declared_zone": geo_zone_check(row["address"]),
         "last_seen_at": row["last_seen_at"],
     }
 
@@ -90,9 +124,12 @@ def add_opportunity_scores(listings: list[dict]) -> None:
         if l["price_per_m2"] and median:
             l["segment_median_price_per_m2"] = round(median)
             l["opportunity_score"] = round(100 * (1 - l["price_per_m2"] / median), 1)
+            # "Buen precio": >=5% below the segment median price/m2.
+            l["good_price"] = l["opportunity_score"] >= 5
         else:
             l["segment_median_price_per_m2"] = None
             l["opportunity_score"] = None
+            l["good_price"] = None
 
     ranked = sorted(
         (l for l in listings if l["opportunity_score"] is not None),

@@ -157,7 +157,9 @@ class GenericPortalAdapter:
             "price": _to_num(price),
             "rooms": _to_num(merged.get("numberOfRooms") or merged.get("numberOfBedrooms")),
             "bathrooms": _to_num(merged.get("numberOfBathroomsTotal")),
-            "parking_spots": None,
+            "parking_spots": _to_num(_first(
+                merged.get("numberOfParkingSpaces"), merged.get("parkingSpaces")
+            )),
             "area_m2": _to_num(area),
             "description": _first(merged.get("description"), meta.get("og:description")),
             "photo_urls": _photo_list(merged.get("image"), meta.get("og:image")),
